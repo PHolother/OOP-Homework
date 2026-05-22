@@ -1,0 +1,32 @@
+import java.io.*;
+
+public class TextFileCopy {
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("输入源文件和目标文件路径");
+            System.out.println("实例: java TextFileCopy source.txt dest.txt");
+            return;
+        }
+
+        String sourcePath = args[0];
+        String destPath = args[1];
+
+        // 使用 try-with-resources 自动关闭流
+        try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(destPath))) {
+
+            String line;
+            // 逐行读取并写入，保留换行符
+            while ((line = reader.readLine()) != null) {
+                writer.write(line);
+                writer.newLine(); // 写入系统换行符
+            }
+
+            System.out.println("文本文件复制成功！");
+        } catch (FileNotFoundException e) {
+            System.err.println("源文件未找到: " + sourcePath);
+        } catch (IOException e) {
+            System.err.println("文件读写错误: " + e.getMessage());
+        }
+    }
+}
